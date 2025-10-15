@@ -1,8 +1,13 @@
-import { envConfig } from './src/config';
+import { config } from 'dotenv';
 import app from './src/app';
+config()
 
+//database connection import
+//import garena vane connect hudaina 
+
+import "./src/database/connection"
 function startServer() {
-  const port = Number(envConfig.portNumber) || 3000;
+  const port = process.env.PORT;
   app.listen(port, () => {
     console.log(`✅ Server has started at port ${port}`);
   });
