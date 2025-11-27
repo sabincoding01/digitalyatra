@@ -5,7 +5,7 @@ import { Table, Column, Model, DataType } from "sequelize-typescript";
   modelName: "User",       // Model name inside your project
   timestamps: true,        // Automatically adds createdAt, updatedAt
 })
-export default class User extends Model {
+class User extends Model {
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -31,3 +31,5 @@ export default class User extends Model {
   })
   declare role: string;
 }
+
+export default User
