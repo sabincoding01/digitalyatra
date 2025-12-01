@@ -16,7 +16,7 @@ sequelize
   .catch((err) => console.error("Connection error:", err));
 
 sequelize
-  .sync({ force: true })
+  .sync({ alter: false })
   .then(() => console.log("Migrated successfully"));
 
 export default sequelize;

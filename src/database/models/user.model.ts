@@ -28,6 +28,7 @@ class User extends Model {
   @Column({
     type: DataType.ENUM("teacher", "institute", "super-admin", "student"),
     allowNull: false,
+    defaultValue:"user",
   })
   declare role: string;
 }
