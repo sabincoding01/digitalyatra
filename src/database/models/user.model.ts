@@ -1,11 +1,12 @@
 import { Table, Column, Model, DataType } from "sequelize-typescript";
 
 @Table({
-  tableName: "users",      // Actual table name in MySQL
-  modelName: "User",       // Model name inside your project
-  timestamps: true,        // Automatically adds createdAt, updatedAt
+  tableName: "users",
+  modelName: "User",
+  timestamps: true,
 })
 class User extends Model {
+  
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -26,11 +27,11 @@ class User extends Model {
   declare email: string;
 
   @Column({
-    type: DataType.ENUM("teacher", "institute", "super-admin", "student"),
+    type: DataType.ENUM("teacher", "institute", "super-admin", "student", "user"),
     allowNull: false,
-    defaultValue:"user",
+    defaultValue: "user",   // now allowed
   })
   declare role: string;
 }
 
-export default User
+export default User;

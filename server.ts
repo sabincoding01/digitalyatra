@@ -9,7 +9,7 @@ config()
 import "./src/database/connection"
 function startServer() {
   const port = process.env.PORT;
-  app.listen(port, () => {
+  app.listen(8000, () => {
     console.log(`✅ Server has started at port ${port}`);
   });
 }
