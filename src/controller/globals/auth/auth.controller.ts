@@ -1,46 +1,156 @@
-import { Request, Response } from "express";
-import User from "../../../database/models/user.model";
-import bcrypt from "bcrypt";
 
-class AuthController {
-  static async registerUser(req: Request, res: Response) {
-    try {
-      const { username, password, email, role } = req.body;
 
-      if (!username || !password || !email) {
-        return res.status(400).json({
-          message: "Please provide username, password, email",
-        });
-      }
 
-      // Check duplicate email
-      const existingUser = await User.findOne({ where: { email } });
-      if (existingUser) {
-        return res.status(409).json({
-          message: "Email already registered!",
-        });
-      }
 
-      // Create and insert new user
-      await User.create({
-        username,
-        password: bcrypt.hashSync(password, 12),
-        email,
-        role: role ?? "user", // optional role
-      });
+/*
 
-      return res.status(201).json({
-        message: "User registered successfully",
-      });
+REGISTER/SIGNUP
+incoming data  --> username, email, password 
+processing/checking --> email valid, compulsory data aaaunu paryo 
+db--> table--> query --> table ma insert/read/delete/update
 
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-        message: "Server error",
-        error: error,
-      });
+LOGIN/SIGNIN
+LOGOUT
+FORGOT PASSWORD 
+RESET PASSWORD/ OTP
+
+*/
+
+import {Request,Response} from "express"
+import User from "../../../database/models/user.model"
+import bcrypt from "bcrypt"
+
+// json data --> req.body // username,email,password 
+// files --> req.file // files
+// const registerUser = async (req:Request,res:Response)=>{
+// //    const username = req.body.username
+// //    const password = req.body.password
+// //    const email = req.body.email
+//     // incoming data --> accept
+//    const {username,password,email} = req.body
+//    if(!username || !password || !email){
+//      res.status(400).json({
+//         message : "Please provide username, password, email"
+//     })
+//     return
+//    }
+//     // insert into Users table 
+//     await User.create({
+//         username :username, 
+//         password : password, 
+//         email : email
+//     })
+//     res.status(200).json({
+//         message : "User registered successfully"
+//     })
+   
+
+// } // function 
+// BOLA Attack
+
+/* 
+login flow : 
+email/username, password (basic)
+email , password -- data accept --> validation --> 
+// first check email exist or not (verify) --> yes --> check password now --> mil0--> 
+token generation (jsonwebtoken)
+
+--> now --> not registered 
+
+
+
+google login, fb, github (oauth)
+email login (SSO)
+
+*/
+
+class AuthController{
+   static async registerUser(req:Request,res:Response){
+   
+    if(req.body == undefined){
+        console.log("triggereed")
+        res.status(400).json({
+            message  : "No data was sent!!"
+        })
+        return
     }
-  }
+    const {username,password,email} = req.body
+    if(!username || !password || !email ){
+      res.status(400).json({
+         message : "Please provide username, password, email"
+     })
+     return
+    }
+//    const [data] =  await User.findAll({
+//         where : {
+//             email
+//         }
+//     })
+//     if(data){
+//         // already exists with that email 
+//     }
+     // insert into Users table 
+     await User.create({
+         userName :username, 
+         password : bcrypt.hashSync(password,12), //blowfish
+         email : email,
+     })
+     res.status(201).json({
+         message : "User registered successfully"
+     })
+   }
+   static async loginUser(req:Request,res:Response){
+    const {email,password} = req.body 
+    if(!email || !password){
+        res.status(400).json({
+            message : "Please provide email,password "
+        })
+        return
+    }
+    // check if email exist or not in our users table
+    const data = await User.findAll({
+        where : {
+            email
+        }
+    }) 
+    
+
+if(data.length == 0){
+    res.status(404).json({
+        messege:"Not Registered!!"
+    })
 }
 
-export default AuthController;
+else{
+ 
+    //check password , nepal123 --> hash conversion --> fsdkjfsdfjsd
+    //
+    const isPasswordMatch = bcrypt.compareSync(password,data[0].password)
+        if(isPasswordMatch){
+//login vayo , token generation 
+
+        }else{
+            res.status(403).json({
+                message :"Invalid email or password"
+
+            })
+        }
+}
+
+}
+    }
+   
+   
+
+
+
+
+export default AuthController
+
+
+// export  {registerUser}
+
+
+
+// token(jwt), session
+// cookie, localstorage
