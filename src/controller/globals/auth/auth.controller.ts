@@ -19,6 +19,7 @@ RESET PASSWORD/ OTP
 import {Request,Response} from "express"
 import User from "../../../database/models/user.model"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
 // json data --> req.body // username,email,password 
 // files --> req.file // files
@@ -128,6 +129,12 @@ else{
     const isPasswordMatch = bcrypt.compareSync(password,data[0].password)
         if(isPasswordMatch){
 //login vayo , token generation 
+             const token =    jwt.sign({id: data[0].id }, "thisissecretkey",{
+                    expiresIn: "90d"
+                })
+res.json({
+    token: token
+})
 
         }else{
             res.status(403).json({
