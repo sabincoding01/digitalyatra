@@ -91,7 +91,7 @@ class AuthController{
 //     }
      // insert into Users table 
      await User.create({
-         userName :username, 
+         username :username, 
          password : bcrypt.hashSync(password,12), //blowfish
          email : email,
      })
