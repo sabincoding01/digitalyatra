@@ -2,5 +2,5 @@ import { config } from 'dotenv';
 config();
 
 export const envConfig = {
-  portNumber: process.env.PORT,//portwilltaken from dotenv
+  portNumber: 8000//process.env.PORT,//portwilltaken from dotenv
 };
