@@ -130,7 +130,7 @@ else{
         if(isPasswordMatch){
 //login vayo , token generation 
              const token =    jwt.sign({id: data[0].id }, "thisissecretkey",{
-                    expiresIn: "90d"
+                    expiresIn: "30d"
                 })
 res.json({
     token: token
