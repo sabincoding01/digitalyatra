@@ -133,7 +133,8 @@ else{
                     expiresIn: "30d"
                 })
 res.json({
-    token: token
+    token: token,
+    messege : "login successfully"
 })
 
         }else{
